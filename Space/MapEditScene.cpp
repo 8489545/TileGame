@@ -79,19 +79,19 @@ void MapEditScene::Init()
 
 	m_SizeX = new TextMgr();
 	m_SizeX->Init(32, true, false, "Arial");
-	m_SizeX->SetColor(255, 0, 0, 0);
+	m_SizeX->SetColor(255, 255,255, 255);
 
 	m_SizeY = new TextMgr();
 	m_SizeY->Init(32, true, false, "Arial");
-	m_SizeY->SetColor(255, 0, 0, 0);
+	m_SizeY->SetColor(255, 255, 255, 255);
 
 	m_GridSizeX = new TextMgr();
 	m_GridSizeX->Init(32, true, false, "Arial");
-	m_GridSizeX->SetColor(255, 0, 0, 0);
+	m_GridSizeX->SetColor(255, 255, 255, 255);
 
 	m_GridSizeY = new TextMgr();
 	m_GridSizeY->Init(32, true, false, "Arial");
-	m_GridSizeY->SetColor(255, 0, 0, 0);
+	m_GridSizeY->SetColor(255, 255, 255, 255);
 }
 
 void MapEditScene::Release()
