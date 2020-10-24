@@ -15,6 +15,7 @@ class MapEditScene : public Scene
 
 	Vec2 m_PrevSize;
 	Vec2 m_TileSize;
+	Vec2 m_GridSize;
 
 	bool m_isCollision;
 	bool m_HideGrid;
@@ -25,12 +26,20 @@ class MapEditScene : public Scene
 
 	TextMgr* m_SizeX;
 	TextMgr* m_SizeY;
+	TextMgr* m_GridSizeX;
+	TextMgr* m_GridSizeY;
 
 	Sprite* m_SizeXPlusButton;
 	Sprite* m_SizeXMinusButton;
 
 	Sprite* m_SizeYPlusButton;
 	Sprite* m_SizeYMinusButton;
+
+	Sprite* m_GridSizeXPlusButton;
+	Sprite* m_GridSizeXMinusButton;
+
+	Sprite* m_GridSizeYPlusButton;
+	Sprite* m_GridSizeYMinusButton;
 
 	Sprite* m_ChangePaletteButton;
 

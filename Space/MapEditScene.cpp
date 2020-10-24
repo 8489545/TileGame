@@ -16,6 +16,7 @@ void MapEditScene::Init()
 	m_Palette->SetPosition(650, 600 / 2);
 	m_Palette->m_Tag = "UI";
 
+	//------------SizeButton------------
 	m_SizeXPlusButton = Sprite::Create(L"Painting/Map/Plus.png");
 	m_SizeXPlusButton->SetPosition(50, 100);
 	m_SizeXPlusButton->m_Tag = "UI";
@@ -31,6 +32,25 @@ void MapEditScene::Init()
 	m_SizeYMinusButton = Sprite::Create(L"Painting/Map/Minus.png");
 	m_SizeYMinusButton->SetPosition(100, 200);
 	m_SizeYMinusButton->m_Tag = "UI";
+	//--------------------------------------
+
+	//------------GridSizeButton------------
+	m_GridSizeXPlusButton = Sprite::Create(L"Painting/Map/Plus.png");
+	m_GridSizeXPlusButton->SetPosition(50, 300);
+	m_GridSizeXPlusButton->m_Tag = "UI";
+
+	m_GridSizeXMinusButton = Sprite::Create(L"Painting/Map/Minus.png");
+	m_GridSizeXMinusButton->SetPosition(100, 300);
+	m_GridSizeXMinusButton->m_Tag = "UI";
+
+	m_GridSizeYPlusButton = Sprite::Create(L"Painting/Map/Plus.png");
+	m_GridSizeYPlusButton->SetPosition(50, 400);
+	m_GridSizeYPlusButton->m_Tag = "UI";
+
+	m_GridSizeYMinusButton = Sprite::Create(L"Painting/Map/Minus.png");
+	m_GridSizeYMinusButton->SetPosition(100, 400);
+	m_GridSizeYMinusButton->m_Tag = "UI";
+	//--------------------------------------
 
 	m_ChangePaletteButton = Sprite::Create(L"Painting/Map/ChangePalette.png");
 	m_ChangePaletteButton->SetPosition(700, 50);
@@ -40,13 +60,14 @@ void MapEditScene::Init()
 	m_PaletteType = "Floor";
 
 	m_TileSize = Vec2(25, 25);
+	m_GridSize = Vec2(25, 25);
 
 	for (int i = 0; i < 100; i++)
 	{
 		Sprite* v = Sprite::Create(L"Painting/Map/Vertical.png");
-		v->SetPosition(m_TileSize.x * i, App::GetInst()->m_Height / 2);
+		v->SetPosition(m_GridSize.x * i, App::GetInst()->m_Height / 2);
 		Sprite* h = Sprite::Create(L"Painting/Map/Horizontal.png");
-		h->SetPosition(App::GetInst()->m_Width / 2, m_TileSize.y * i);
+		h->SetPosition(App::GetInst()->m_Width / 2, m_GridSize.y * i);
 
 		m_Vertical.push_back(v);
 		m_Horizontal.push_back(h);
@@ -63,6 +84,14 @@ void MapEditScene::Init()
 	m_SizeY = new TextMgr();
 	m_SizeY->Init(32, true, false, "Arial");
 	m_SizeY->SetColor(255, 0, 0, 0);
+
+	m_GridSizeX = new TextMgr();
+	m_GridSizeX->Init(32, true, false, "Arial");
+	m_GridSizeX->SetColor(255, 0, 0, 0);
+
+	m_GridSizeY = new TextMgr();
+	m_GridSizeY->Init(32, true, false, "Arial");
+	m_GridSizeY->SetColor(255, 0, 0, 0);
 }
 
 void MapEditScene::Release()
@@ -78,6 +107,11 @@ void MapEditScene::ButtonAction()
 		Button(m_SizeYPlusButton, [&] { m_TileSize.y += 1; });
 		Button(m_SizeYMinusButton, [&] { m_TileSize.y -= 1; });
 
+		Button(m_GridSizeXPlusButton, [&] { m_GridSize.x += 1; });
+		Button(m_GridSizeXMinusButton, [&] { m_GridSize.x -= 1; });
+		Button(m_GridSizeYPlusButton, [&] { m_GridSize.y += 1; });
+		Button(m_GridSizeYMinusButton, [&] { m_GridSize.y -= 1; });
+
 		Button(m_ChangePaletteButton, [&] { OpenPalette(); });
 	}
 }
@@ -86,14 +120,20 @@ void MapEditScene::DrawTile()
 {
 	if (m_ActiveTile)
 	{
-		if ((INPUT->GetLocalMousePos().x / m_TileSize.x) * m_TileSize.x < 0 && (INPUT->GetLocalMousePos().y / m_TileSize.y) * m_TileSize.y < 0)
-			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_TileSize.x) * m_TileSize.x - m_TileSize.x, (int)(INPUT->GetLocalMousePos().y / m_TileSize.y) * m_TileSize.y - m_TileSize.y);
-		else if ((INPUT->GetLocalMousePos().x / m_TileSize.x) * m_TileSize.x < 0)
-			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_TileSize.x) * m_TileSize.x - m_TileSize.x, (int)(INPUT->GetLocalMousePos().y / m_TileSize.y) * m_TileSize.y);
-		else if ((INPUT->GetLocalMousePos().y / m_TileSize.y) * m_TileSize.y < 0)
-			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_TileSize.x) * m_TileSize.x, (int)(INPUT->GetLocalMousePos().y / m_TileSize.y) * m_TileSize.y - m_TileSize.y);
+		if ((INPUT->GetLocalMousePos().x / m_GridSize.x) * m_GridSize.x < 0 && (INPUT->GetLocalMousePos().y / m_GridSize.y) * m_GridSize.y < 0)
+			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_GridSize.x) * m_GridSize.x - m_GridSize.x, (int)(INPUT->GetLocalMousePos().y / m_GridSize.y) * m_GridSize.y - m_GridSize.y);
+		else if ((INPUT->GetLocalMousePos().x / m_GridSize.x) * m_GridSize.x < 0)
+			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_GridSize.x) * m_GridSize.x - m_GridSize.x, (int)(INPUT->GetLocalMousePos().y / m_GridSize.y) * m_GridSize.y);
+		else if ((INPUT->GetLocalMousePos().y / m_GridSize.y) * m_GridSize.y < 0)
+			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_GridSize.x) * m_GridSize.x, (int)(INPUT->GetLocalMousePos().y / m_GridSize.y) * m_GridSize.y - m_GridSize.y);
 		else
-			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_TileSize.x) * m_TileSize.x, (int)(INPUT->GetLocalMousePos().y / m_TileSize.y) * m_TileSize.y);
+			m_ActiveTile->SetPosition((int)(INPUT->GetLocalMousePos().x / m_GridSize.x) * m_GridSize.x, (int)(INPUT->GetLocalMousePos().y / m_GridSize.y) * m_GridSize.y);
+
+		if (INPUT->GetRightButtonDown())
+		{
+			m_isCollision = false;
+			m_ActiveTile = nullptr;
+		}
 	}
 	if (m_ActiveTile && m_DrawMode)
 	{
@@ -132,12 +172,6 @@ void MapEditScene::DrawTile()
 			t->pos = Vec2(m_ActiveTile->m_Position.x / m_TileSize.x, m_ActiveTile->m_Position.y / m_TileSize.y);
 
 			m_Map.push_back(t);
-		}
-
-		if (INPUT->GetRightButtonDown())
-		{
-			m_isCollision = false;
-			m_ActiveTile = nullptr;
 		}
 	}
 }
@@ -182,7 +216,7 @@ void MapEditScene::Update(float deltaTime, float Time)
 {
 	Camera::GetInst()->Translate();
 
-	m_PrevSize = m_TileSize;
+	m_PrevSize = m_GridSize;
 
 	ButtonAction();
 	DrawTile();
@@ -251,12 +285,12 @@ void MapEditScene::Update(float deltaTime, float Time)
 		}
 	}
 
-	if (m_PrevSize != m_TileSize)
+	if (m_PrevSize != m_GridSize)
 	{
 		for (int i = 0; i < 100; i++)
 		{
-			m_Vertical.at(i)->SetPosition(m_TileSize.x* i, App::GetInst()->m_Height / 2);
-			m_Horizontal.at(i)->SetPosition(App::GetInst()->m_Width / 2, m_TileSize.y * i);
+			m_Vertical.at(i)->SetPosition(m_GridSize.x* i, App::GetInst()->m_Height / 2);
+			m_Horizontal.at(i)->SetPosition(App::GetInst()->m_Width / 2, m_GridSize.y * i);
 		}
 	}
 }
@@ -272,10 +306,10 @@ void MapEditScene::Render()
 	for (auto& iter : m_Vertical)
 	{
 		if (abs(iter->m_Position.x - Camera::GetInst()->m_Position.x) > App::GetInst()->m_Width)
-			iter->m_Position.x -= m_TileSize.x * 100;
+			iter->m_Position.x -= m_GridSize.x * 100;
 
 		if (iter->m_Position.x < Camera::GetInst()->m_Position.x)
-			iter->m_Position.x += m_TileSize.x * 100;
+			iter->m_Position.x += m_GridSize.x * 100;
 
 		iter->m_Position.y = Camera::GetInst()->m_Position.y + iter->m_Size.y / 2;
 
@@ -284,10 +318,10 @@ void MapEditScene::Render()
 	for (auto& iter : m_Horizontal)
 	{
 		if (abs(iter->m_Position.y - Camera::GetInst()->m_Position.y) > App::GetInst()->m_Height)
-			iter->m_Position.y -= m_TileSize.y * 100;
+			iter->m_Position.y -= m_GridSize.y * 100;
 
 		if (iter->m_Position.y < Camera::GetInst()->m_Position.y)
-			iter->m_Position.y += m_TileSize.y * 100;
+			iter->m_Position.y += m_GridSize.y * 100;
 
 		iter->m_Position.x = Camera::GetInst()->m_Position.x + iter->m_Size.x / 2;
 
@@ -305,11 +339,18 @@ void MapEditScene::Render()
 		m_SizeYPlusButton->Render();
 		m_SizeYMinusButton->Render();
 
+		m_GridSizeXPlusButton->Render();
+		m_GridSizeXMinusButton->Render();
+		m_GridSizeYPlusButton->Render();
+		m_GridSizeYMinusButton->Render();
+
 		m_ChangePaletteButton->Render();
 
 		Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
-		m_SizeX->print(" X :" + std::to_string(((int)m_TileSize.x)), 25, 25);
-		m_SizeY->print(" Y : " + std::to_string(((int)m_TileSize.y)), 25, 125);
+		m_SizeX->print("Tile X :" + std::to_string(((int)m_TileSize.x)), 25, 25);
+		m_SizeY->print("Tile Y : " + std::to_string(((int)m_TileSize.y)), 25, 125);
+		m_SizeX->print("Grid X :" + std::to_string(((int)m_GridSize.x)), 25, 225);
+		m_SizeY->print("Grid Y : " + std::to_string(((int)m_GridSize.y)), 25, 325);
 		Renderer::GetInst()->GetSprite()->End();
 	}
 }
