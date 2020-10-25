@@ -66,6 +66,8 @@ public:
 	void ButtonAction();
 	void DrawTile();
 
+	void MovePalette();
+
 	void ChangePalette(std::wstring filename);
 	void OpenPalette();
 

@@ -81,9 +81,6 @@
     <ClCompile Include="TextMgr.cpp">
       <Filter>Game\Mgrs</Filter>
     </ClCompile>
-    <ClCompile Include="MainScene.cpp">
-      <Filter>Game\Object\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="MapEditScene.cpp">
       <Filter>Game\Object\Scene</Filter>
     </ClCompile>
@@ -148,9 +145,6 @@
     </ClInclude>
     <ClInclude Include="TextMgr.h">
       <Filter>Game\Mgrs</Filter>
-    </ClInclude>
-    <ClInclude Include="MainScene.h">
-      <Filter>Game\Object\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>Game\Object</Filter>

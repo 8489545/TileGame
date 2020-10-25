@@ -26,7 +26,6 @@
     <ClCompile Include="EffectMgr.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LineMgr.cpp" />
-    <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapEditScene.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -52,7 +51,6 @@
     <ClInclude Include="EffectMgr.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LineMgr.h" />
-    <ClInclude Include="MainScene.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapEditScene.h" />
     <ClInclude Include="Object.h" />

@@ -176,6 +176,20 @@ void MapEditScene::DrawTile()
 	}
 }
 
+void MapEditScene::MovePalette()
+{
+	if (INPUT->GetKey('W') == KeyState::PRESS)
+		m_Palette->m_Position.y -= 300 * dt;
+	if (INPUT->GetKey('S') == KeyState::PRESS)
+		m_Palette->m_Position.y += 300 * dt;
+
+	if (INPUT->GetKey('A') == KeyState::PRESS)
+		m_Palette->m_Position.x -= 300 * dt;
+	if (INPUT->GetKey('D') == KeyState::PRESS)
+		m_Palette->m_Position.x += 300 * dt;
+
+}
+
 void MapEditScene::ChangePalette(std::wstring filename)
 {
 	m_Palette = Sprite::Create(filename);
@@ -220,6 +234,7 @@ void MapEditScene::Update(float deltaTime, float Time)
 
 	ButtonAction();
 	DrawTile();
+	MovePalette();
 
 	if (CollisionMgr::GetInst()->MouseWithBoxSize(m_Palette) && !m_DrawMode)
 	{
