@@ -52,6 +52,16 @@ void MapEditScene::Init()
 	m_GridSizeYMinusButton->m_Tag = "UI";
 	//--------------------------------------
 
+	//------------LayerButton------------
+	m_LayerPlusButton = Sprite::Create(L"Painting/Map/Plus.png");
+	m_LayerPlusButton->SetPosition(50, 500);
+	m_LayerPlusButton->m_Tag = "UI";
+
+	m_LayerMinusButton = Sprite::Create(L"Painting/Map/Minus.png");
+	m_LayerMinusButton->SetPosition(100, 500);
+	m_LayerMinusButton->m_Tag = "UI";
+	//--------------------------------------
+
 	m_ChangePaletteButton = Sprite::Create(L"Painting/Map/ChangePalette.png");
 	m_ChangePaletteButton->SetPosition(700, 50);
 	m_ChangePaletteButton->m_Tag = "UI";
@@ -61,6 +71,8 @@ void MapEditScene::Init()
 
 	m_TileSize = Vec2(25, 25);
 	m_GridSize = Vec2(25, 25);
+	
+	m_CurrentLayer = 0;
 
 	for (int i = 0; i < 100; i++)
 	{
@@ -92,6 +104,11 @@ void MapEditScene::Init()
 	m_GridSizeY = new TextMgr();
 	m_GridSizeY->Init(32, true, false, "Arial");
 	m_GridSizeY->SetColor(255, 255, 255, 255);
+
+	m_Layer = new TextMgr();
+	m_Layer->Init(32, true, false, "Arial");
+	m_Layer->SetColor(255, 255, 255, 255);
+
 }
 
 void MapEditScene::Release()
@@ -111,6 +128,9 @@ void MapEditScene::ButtonAction()
 		Button(m_GridSizeXMinusButton, [&] { m_GridSize.x -= 1; });
 		Button(m_GridSizeYPlusButton, [&] { m_GridSize.y += 1; });
 		Button(m_GridSizeYMinusButton, [&] { m_GridSize.y -= 1; });
+
+		Button(m_LayerPlusButton, [&] { m_CurrentLayer += 1; });
+		Button(m_LayerMinusButton, [&] { m_CurrentLayer -= 1; });
 
 		Button(m_ChangePaletteButton, [&] { OpenPalette(); });
 	}
@@ -140,7 +160,7 @@ void MapEditScene::DrawTile()
 
 		for (auto& iter : m_Map)
 		{
-			if (iter->type == m_PaletteType && iter->pos == Vec2(m_ActiveTile->m_Position.x / m_TileSize.x, m_ActiveTile->m_Position.y / m_TileSize.y))
+			if (iter->tile->m_Layer == m_CurrentLayer && iter->pos == Vec2(m_ActiveTile->m_Position.x / m_TileSize.x, m_ActiveTile->m_Position.y / m_TileSize.y))
 			{
 				m_isCollision = true;
 				break;
@@ -164,6 +184,7 @@ void MapEditScene::DrawTile()
 			tile->m_RotationCenter = m_ActiveTile->m_RotationCenter;
 			SetRect(&tile->m_Rect, m_TileSize.x * Row + Row, m_TileSize.y * Column + Column, m_TileSize.x * (Row + 1) + Row, m_TileSize.y * (Column + 1) + Column);
 			tile->m_Tag = "Tile";
+			tile->m_Layer = m_CurrentLayer;
 			tile->SetPosition(m_ActiveTile->m_Position.x, m_ActiveTile->m_Position.y);
 			tile->m_Rotation = m_ActiveTile->m_Rotation;
 
@@ -308,10 +329,18 @@ void MapEditScene::Update(float deltaTime, float Time)
 			m_Horizontal.at(i)->SetPosition(App::GetInst()->m_Width / 2, m_GridSize.y * i);
 		}
 	}
+
+	std::sort(m_Map.begin(), m_Map.end(), [&](Tile* p1, Tile* p2)
+		{
+			if (p1->tile->m_Layer < p2->tile->m_Layer)
+				return true;
+			return false;
+		});
 }
 
 void MapEditScene::Render()
 {
+
 	for (auto& iter : m_Map)
 	{
 		iter->tile->Render();
@@ -359,6 +388,9 @@ void MapEditScene::Render()
 		m_GridSizeYPlusButton->Render();
 		m_GridSizeYMinusButton->Render();
 
+		m_LayerPlusButton->Render();
+		m_LayerMinusButton->Render();
+
 		m_ChangePaletteButton->Render();
 
 		Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
@@ -366,6 +398,7 @@ void MapEditScene::Render()
 		m_SizeY->print("Tile Y : " + std::to_string(((int)m_TileSize.y)), 25, 125);
 		m_SizeX->print("Grid X :" + std::to_string(((int)m_GridSize.x)), 25, 225);
 		m_SizeY->print("Grid Y : " + std::to_string(((int)m_GridSize.y)), 25, 325);
+		m_SizeY->print("Layer : " + std::to_string(((int)m_CurrentLayer)), 25, 425);
 		Renderer::GetInst()->GetSprite()->End();
 	}
 }

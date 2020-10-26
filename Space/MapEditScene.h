@@ -28,6 +28,7 @@ class MapEditScene : public Scene
 	TextMgr* m_SizeY;
 	TextMgr* m_GridSizeX;
 	TextMgr* m_GridSizeY;
+	TextMgr* m_Layer;
 
 	Sprite* m_SizeXPlusButton;
 	Sprite* m_SizeXMinusButton;
@@ -40,6 +41,9 @@ class MapEditScene : public Scene
 
 	Sprite* m_GridSizeYPlusButton;
 	Sprite* m_GridSizeYMinusButton;
+
+	Sprite* m_LayerPlusButton;
+	Sprite* m_LayerMinusButton;
 
 	Sprite* m_ChangePaletteButton;
 
@@ -59,6 +63,8 @@ public:
 
 	std::wstring m_PaletteFilePath;
 	std::string m_PaletteType;
+
+	int m_CurrentLayer;
 
 	void Init();
 	void Release();
