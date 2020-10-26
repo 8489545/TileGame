@@ -155,5 +155,8 @@
     <ClInclude Include="MapEditScene.h">
       <Filter>Game\Object\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Serialization.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

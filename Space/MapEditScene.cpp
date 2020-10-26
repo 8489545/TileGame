@@ -2,6 +2,7 @@
 #include "MapEditScene.h"
 #include"Map.h"
 
+
 MapEditScene::MapEditScene()
 {
 }
@@ -65,6 +66,14 @@ void MapEditScene::Init()
 	m_ChangePaletteButton = Sprite::Create(L"Painting/Map/ChangePalette.png");
 	m_ChangePaletteButton->SetPosition(700, 50);
 	m_ChangePaletteButton->m_Tag = "UI";
+
+	m_SaveButton = Sprite::Create(L"Painting/Map/Save.png");
+	m_SaveButton->SetPosition(500, 50);
+	m_SaveButton->m_Tag = "UI";
+
+	m_LoadButton = Sprite::Create(L"Painting/Map/Load.png");
+	m_LoadButton->SetPosition(600, 50);
+	m_LoadButton->m_Tag = "UI";
 
 	m_PaletteFilePath = L"Painting/Map/Floor.png";
 	m_PaletteType = "Floor";
@@ -133,6 +142,9 @@ void MapEditScene::ButtonAction()
 		Button(m_LayerMinusButton, [&] { m_CurrentLayer -= 1; });
 
 		Button(m_ChangePaletteButton, [&] { OpenPalette(); });
+
+		Button(m_SaveButton, [&] { SaveMap(); });
+		Button(m_LoadButton, [&] { LoadMap(); });
 	}
 }
 
@@ -197,6 +209,26 @@ void MapEditScene::DrawTile()
 	}
 }
 
+void MapEditScene::SaveMap()
+{
+}
+
+void MapEditScene::LoadMap()
+{
+	TCHAR filename[256] = L"";
+	OPENFILENAME ofn;
+	ZeroMemory(&ofn, sizeof(OPENFILENAME));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.hwndOwner = App::GetInst()->GetHwnd();
+	ofn.lpstrFile = filename;
+	ofn.nMaxFile = 256;
+	ofn.lpstrFilter = TEXT("Mapfile(.map)\0*.map\0All Files (*.*)\0*.*\0");;
+	ofn.lpstrInitialDir = TEXT("Painting\Map");
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (::GetOpenFileName(&ofn) == false) return;
+}
+
 void MapEditScene::MovePalette()
 {
 	if (INPUT->GetKey('W') == KeyState::PRESS)
@@ -219,7 +251,6 @@ void MapEditScene::ChangePalette(std::wstring filename)
 
 	m_PaletteFilePath = filename;
 	m_ActiveTile = nullptr;
-
 }
 
 void MapEditScene::OpenPalette()
@@ -275,7 +306,7 @@ void MapEditScene::Update(float deltaTime, float Time)
 
 	for (auto iter = m_Map.begin();iter != m_Map.end(); )
 	{
-		if (CollisionMgr::GetInst()->MouseWithBoxSize((*iter)->tile) && INPUT->GetRightButtonDown() && (*iter)->type == m_PaletteType)
+		if (CollisionMgr::GetInst()->MouseWithBoxSize((*iter)->tile) && INPUT->GetRightButtonDown() && (*iter)->tile->m_Layer == m_CurrentLayer)
 		{
 			iter = m_Map.erase(iter);
 		}
@@ -392,6 +423,9 @@ void MapEditScene::Render()
 		m_LayerMinusButton->Render();
 
 		m_ChangePaletteButton->Render();
+
+		m_SaveButton->Render();
+		m_LoadButton->Render();
 
 		Renderer::GetInst()->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 		m_SizeX->print("Tile X :" + std::to_string(((int)m_TileSize.x)), 25, 25);

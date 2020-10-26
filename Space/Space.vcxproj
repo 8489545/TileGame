@@ -59,6 +59,7 @@
     <ClInclude Include="ResourceMgr.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneDirector.h" />
+    <ClInclude Include="Serialization.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Sprite.h" />

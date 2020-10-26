@@ -47,6 +47,9 @@ class MapEditScene : public Scene
 
 	Sprite* m_ChangePaletteButton;
 
+	Sprite* m_SaveButton;
+	Sprite* m_LoadButton;
+
 	struct Tile
 	{
 	public:
@@ -66,11 +69,16 @@ public:
 
 	int m_CurrentLayer;
 
+	DWORD size;
+
 	void Init();
 	void Release();
 
 	void ButtonAction();
 	void DrawTile();
+
+	void SaveMap();
+	void LoadMap();
 
 	void MovePalette();
 
